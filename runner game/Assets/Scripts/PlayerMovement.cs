@@ -7,10 +7,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Настройки движения")]
     [SerializeField] private float baseForwardSpeed = 10f;
-    [SerializeField] private float accelerationCoef = 1.0015f;
+    [SerializeField] private float accelerationCoef = 1.015f;
     [SerializeField] private float maxForwardSpeed = 60f;
     [SerializeField] private float currentSpeed = 10f;
     [SerializeField] private float sideSpeed = 8f;
+    [SerializeField] private float baseSideSpeed = 8f;
     [SerializeField] private float boundaryOffset = 0.5f;
     
     [Header("Настройки прыжка")]
@@ -120,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
         if (currentSpeed < maxForwardSpeed)
         { 
             currentSpeed = (float)Math.Clamp(baseForwardSpeed * Math.Pow(accelerationCoef, playTime), baseForwardSpeed, maxForwardSpeed);
-
+            sideSpeed = baseSideSpeed + Mathf.Floor((currentSpeed - baseForwardSpeed) / 1.5f);
         }
     }
 

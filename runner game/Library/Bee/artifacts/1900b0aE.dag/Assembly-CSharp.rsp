@@ -402,9 +402,13 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.59f2/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/6000.0.59f2/Editor/Data/Tools/Unity.SourceGenerators/Unity.UIToolkit.SourceGenerator.dll"
 "Assets/Scripts/CameraScaleIgonre.cs"
+"Assets/Scripts/HeartBonus.cs"
 "Assets/Scripts/PlayerHealth.cs"
 "Assets/Scripts/PlayerMovement.cs"
 "Assets/Scripts/RoadSpawner.cs"
+"Assets/Scripts/ShieldBonus.cs"
+"Assets/Scripts/Spikes.cs"
+"Assets/Scripts/UIManager.cs"
 -langversion:9.0
 /deterministic
 /optimize+
