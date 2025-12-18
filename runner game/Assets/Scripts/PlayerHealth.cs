@@ -8,6 +8,18 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth = 3;
     [SerializeField] private int currentHealth = 3;
     [SerializeField] private bool isInvulnerable = false;
+    [SerializeField] private Renderer playerRenderer;
+    
+    [Header("Colors")]
+    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color damageColor = Color.red;
+    [SerializeField] private Color healColor = Color.green;
+    [SerializeField] private Color invulnerableColor = Color.blue;
+    
+    [SerializeField] private float colorFlashDuration = 0.5f;
+    
+    private Material playerMaterial;
+    private Color originalColor;
     private Coroutine invulnerabilityCoroutine;
 
     private void Start()
@@ -15,6 +27,9 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         UIManager.Instance.UpdateHealth(currentHealth);
         UIManager.Instance.UpdateInvulnerability(isInvulnerable);
+        playerRenderer = GetComponent<Renderer>();
+        playerMaterial = playerRenderer.material;
+        originalColor = playerMaterial.color;
     }
 
     public void MakeInvulnerable(float duration)
@@ -30,10 +45,22 @@ public class PlayerHealth : MonoBehaviour
     {
         isInvulnerable = true;
         UIManager.Instance.UpdateInvulnerability(isInvulnerable);
+        playerMaterial.color = invulnerableColor;
+
         yield return new WaitForSeconds(duration);
+
         isInvulnerable = false;
         UIManager.Instance.UpdateInvulnerability(isInvulnerable);
+        playerMaterial.color = originalColor;
         invulnerabilityCoroutine = null;
+    }
+
+    IEnumerator FlashColor(Color flashColor)
+    {
+        Color currentColor = playerMaterial.color;
+        playerMaterial.color = flashColor;
+        yield return new WaitForSeconds(colorFlashDuration);
+        playerMaterial.color = currentColor;
     }
 
     public void TakeDamage(int damage)
@@ -41,6 +68,7 @@ public class PlayerHealth : MonoBehaviour
         if (isInvulnerable) return;
         currentHealth -= damage;
         UIManager.Instance.UpdateHealth(currentHealth);
+        StartCoroutine(FlashColor(damageColor));
         if (currentHealth <= 0)
         {
             Die();
@@ -51,6 +79,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = Math.Min(currentHealth + heal, maxHealth);
         UIManager.Instance.UpdateHealth(currentHealth);
+        StartCoroutine(FlashColor(healColor));
     }
 
     void OnCollisionEnter(Collision collision)

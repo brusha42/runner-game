@@ -11,11 +11,6 @@ public class UIManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
         }
     }
 
@@ -28,6 +23,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         score = 0;
+        bestScore = PlayerPrefs.GetInt("Best Score");
         UpdateText();
     }
 
@@ -37,6 +33,7 @@ public class UIManager : MonoBehaviour
         if (score > bestScore)
         {
             bestScore = score;
+            PlayerPrefs.SetInt("Best Score", bestScore);
         }
         UpdateText();
     }
@@ -61,6 +58,6 @@ public class UIManager : MonoBehaviour
 
     private void UpdateText()
     {
-        tMPro.text = "Best Score: " + bestScore +  "\nScore: " + score + "\nHealth: " + health + "\nInvulnerability " + isInvulnerable;
+        tMPro.text = "Best Score: " + bestScore +  "\nScore: " + score + "\nHealth: " + health + "\nInvulnerability: " + isInvulnerable;
     }
 }
